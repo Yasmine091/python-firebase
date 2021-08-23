@@ -38,3 +38,8 @@ python3 manage.py runserver
 ```
 python3 manage.py createsuperuser
 ```
+
+# Compte d'essai
+```
+d.john@gmail.com:JohnDoe123456
+```

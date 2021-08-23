@@ -4,14 +4,12 @@ from django.shortcuts import render
 
 
 config = {
-
     "apiKey": "",
     "authDomain": "",
     "databaseURL": "",
     "projectId": "",
-    "storageBucket": ,
+    "storageBucket": "",
     "messagingSenderId": "",
-
     "appId": "",
     "measurementId": ""
 }
@@ -75,7 +73,7 @@ def getFirebaseMessages():
     list_messages = {}
     messages = db.child("messages").get()
 
-    for m in messages.each():
+    for m in messages.each() or []:
         list_messages[m.key()] = m.val()["message"]
 
     return list_messages
