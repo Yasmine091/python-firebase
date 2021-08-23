@@ -3,12 +3,10 @@
 import os
 import sys
 
-# Default port
-from django.core.management.commands.runserver import Command as runserver
-runserver.default_port = "7090"
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djangofirebase.settings')
+    """Run administrative tasks."""
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Firebase.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
