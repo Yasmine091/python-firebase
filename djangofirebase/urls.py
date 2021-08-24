@@ -1,4 +1,4 @@
-"""Firebase URL Configuration
+"""djangofirebase URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -22,6 +22,7 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$',views.singIn),
-    url(r'^postsign/',views.postsign),
+    url(r'^$',views.signIn),
+    url(r'^postsign/',views.postSign),
+    url(r'^postmessage/',views.postTask),
 ]

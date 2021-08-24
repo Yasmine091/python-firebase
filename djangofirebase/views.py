@@ -15,16 +15,32 @@ config = {
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 
-def singIn(request):
+def signIn(request):
     return render(request, "signIn.html")
 
-def postsign(request):
+def postSign(request):
     email = request.POST.get('email')
     passw = request.POST.get("pass")
     try:
         user = auth.sign_in_with_email_and_password(email, passw)
     except:
-        message = "invalid cerediantials"
+        message = "Invalid cerediantials"
         return render(request, "signIn.html", {"msg": message})
-        print(user)
-        return render(request, "welcome.html", {"e": email})
+    
+    print(user)
+    return render(request, "welcome.html", {"e": email})
+
+def postTask(request):
+    email = request.POST.get('email')
+    contents = request.POST.get('contents')
+    
+    db = firebase.database()
+    data = {"task": contents}
+      
+    try:
+        db.child("tasks").push(data) 
+    except:
+        message = "Conexion error"
+        return render(request, "signIn.html", {"msg": message})
+        
+    return render(request, "welcome.html", {"e": email})

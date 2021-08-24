@@ -1,13 +1,22 @@
-<html lang=“en“>
+<html lang="en">
 
 <head>
-    <meta charset=“UTF-8“>
+    <meta charset="UTF-8">
     <title>Title</title>
 </head>
 
 <body>
     {% csrf_token %}
-    Welcome {{e}}
+    <h1>
+        Welcome {{e}}
+    </h1>
+    <form action="/postmessage/" method="post">
+        {% csrf_token %}
+        <label for="contents">Message :</label>
+        <input type="text" name="contents">
+        <input type="hidden" name="email" value="{{e}}">
+        <input type="submit" value="save">
+    </form>
 </body>
 
 </html>
