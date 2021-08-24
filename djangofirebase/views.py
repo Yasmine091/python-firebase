@@ -27,12 +27,10 @@ def getTasks():
 
 
 def loadHome(request):
-    
+    tasks = getTasks()
+    user = auth.current_user
     try:
-        tasks = getTasks()
-        user = auth.current_user
         email = user['email']
-        user['email']
     except TypeError:
         message = "Not logged in"
         return render(request, "signIn.html", {"msg": message})
@@ -55,12 +53,13 @@ def postSign(request):
     
     user = auth.refresh(user['refreshToken'])
     print(user)
+    request.session['userAccount'] = user
     render(request, "welcome.html", {"e": email, "t" : tasks})
     return redirect('/home/')
 
 def postLeave(request):
-    # del request.session['token_id']
-    # request.session.modified = True
+    del request.session['userAccount']
+    request.session.modified = True
     message = "You are logged out"
     return render(request, "signIn.html", {"msg": message})
 
