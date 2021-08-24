@@ -64,9 +64,10 @@ def postTask(request):
     try:
         if contents == "" or len(contents) < 4:
             message = "Your task cannot be empty"
-            return render(request, "welcome.html", {"e": email, "t" : tasks, "msg": message})
+            render(request, "welcome.html", {"e": email, "t" : tasks, "msg": message})
         else:
             db.child("tasks").push(data, user['idToken'])
+            tasks = getTasks()
     except:
         message = "Not logged in"
         return render(request, "signIn.html", {"msg": message})
@@ -82,6 +83,7 @@ def delTask(request):
      
     try:
         db.child("tasks").child(task_id).child('task').remove(user['idToken'])
+        tasks = getTasks()
     except:
         message = "Not logged in"
         return render(request, "signIn.html", {"msg": message})
@@ -90,18 +92,28 @@ def delTask(request):
 
 def editTask(request):
     tasks = getTasks()
+    user = auth.current_user
+    email = user['email']
+    task_id = request.POST.get('key')
+     
+    try:
+        return render(request, "welcome.html", {"e": email, "t" : tasks, "tid": task_id})
+    except:
+        message = "Not logged in"
+        return render(request, "signIn.html", {"msg": message})
+    
+    
+def saveTask(request):
+    tasks = getTasks()
     db = firebase.database()
     user = auth.current_user
     email = user['email']
+    task_id = request.POST.get('key')
     contents = request.POST.get('contents')
-    data = {"task": contents}
      
     try:
-        if contents == "" or len(contents) < 4:
-            message = "Your task cannot be empty"
-            return render(request, "welcome.html", {"e": email, "t" : tasks, "msg": message})
-        else:
-            db.child("tasks").push(data, user['idToken'])
+        db.child("tasks").child(task_id).update({"task": contents}, user['idToken'])
+        tasks = getTasks()
     except:
         message = "Not logged in"
         return render(request, "signIn.html", {"msg": message})

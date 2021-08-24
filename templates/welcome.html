@@ -16,12 +16,13 @@
         <h1>
             Welcome {{e}}
         </h1>
-        <form action="/logout/" method="post">
+        <form action="/logout/" method="post" style="align-self: center;">
             {% csrf_token %}
             <input type="submit" value="LogOut">
         </form>
     </div>
-    <form action="/postmessage/" method="post" style="border: #9d9d9d 1px solid; border-radius: 6px; padding: 50px 100px;">
+    <form action="/postmessage/" method="post"
+        style="border: #9d9d9d 1px solid; border-radius: 6px; padding: 50px 100px;">
         {% csrf_token %}
         <label for="contents">Message :</label>
         <input type="text" name="contents" required>
@@ -29,8 +30,16 @@
     </form>
     <div>
         {% for task in t %}
+        {% if tid and tid == task.0 %}
+        <form action="/savemessage/" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="key" value="{{ task.0 }}">
+            <input type="text" name="contents" value="{{ task.1.task }}">
+            <input type="submit" value="save">
+        </form>
+        {% else %}
         <div style="display: flex;">
-        <small style="margin-right: 5px;">{{ task.1.task }}</small>
+            <small style="margin-right: 5px;">{{ task.1.task }}</small>
             <form action="/editmessage/" method="post" style="margin-right: 5px;">
                 {% csrf_token %}
                 <input type="hidden" name="key" value="{{ task.0 }}">
@@ -42,6 +51,7 @@
                 <input type="submit" value="delete">
             </form>
         </div>
+        {% endif %}
         {% endfor %}
     </div>
 </body>

@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^postsign/',views.postSign),
     url(r'^logout/',views.postLeave),
     url(r'^postmessage/',views.postTask),
-    url(r'^editmessage/',views.delTask),
-    url(r'^delmessage/',views.editTask),
+    url(r'^editmessage/',views.editTask),
+    url(r'^savemessage/',views.saveTask),
+    url(r'^delmessage/',views.delTask),
 ]
