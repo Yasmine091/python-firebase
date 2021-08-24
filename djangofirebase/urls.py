@@ -25,4 +25,6 @@ urlpatterns = [
     url(r'^$',views.signIn),
     url(r'^postsign/',views.postSign),
     url(r'^postmessage/',views.postTask),
+    url(r'^editmessage/',views.delTask),
+    url(r'^delmessage/',views.editTask),
 ]
