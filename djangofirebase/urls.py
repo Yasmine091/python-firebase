@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$',views.signIn),
     url(r'^postsign/',views.postSign),
+    url(r'^home/',views.loadHome),
     url(r'^logout/',views.postLeave),
     url(r'^postmessage/',views.postTask),
     url(r'^editmessage/',views.editTask),

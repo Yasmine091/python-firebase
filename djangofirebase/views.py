@@ -1,5 +1,5 @@
 import pyrebase 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 config = {
         "apiKey": "",
@@ -14,9 +14,9 @@ config = {
 
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
+db = firebase.database()
 
 def getTasks():
-    db = firebase.database()
     all_tasks = []
     tasks = db.child("tasks").get()
     
@@ -25,6 +25,19 @@ def getTasks():
         
     return all_tasks
 
+
+def loadHome(request):
+    
+    try:
+        tasks = getTasks()
+        user = auth.current_user
+        email = user['email']
+        user['email']
+    except TypeError:
+        message = "Not logged in"
+        return render(request, "signIn.html", {"msg": message})
+        
+    return render(request, "welcome.html", {"e": email, "t" : tasks})
 
 def signIn(request):
     return render(request, "signIn.html")
@@ -40,22 +53,19 @@ def postSign(request):
         message = "Invalid cerediantials"
         return render(request, "signIn.html", {"msg": message})
     
+    user = auth.refresh(user['refreshToken'])
     print(user)
-    return render(request, "welcome.html", {"e": email, "t" : tasks})
+    render(request, "welcome.html", {"e": email, "t" : tasks})
+    return redirect('/home/')
 
 def postLeave(request):
-    try:
-        del request.session['token_id']
-        auth.signOut()
-    except KeyError:
-        pass
-    
+    # del request.session['token_id']
+    # request.session.modified = True
     message = "You are logged out"
     return render(request, "signIn.html", {"msg": message})
 
 def postTask(request):
     tasks = getTasks()
-    db = firebase.database()
     user = auth.current_user
     email = user['email']
     contents = request.POST.get('contents')
@@ -72,11 +82,11 @@ def postTask(request):
         message = "Not logged in"
         return render(request, "signIn.html", {"msg": message})
     
-    return render(request, "welcome.html", {"e": email, "t" : tasks})
+    render(request, "welcome.html", {"e": email, "t" : tasks})
+    return redirect('/home/')
 
 def delTask(request):
     tasks = getTasks()
-    db = firebase.database()
     user = auth.current_user
     email = user['email']
     task_id = request.POST.get('key')
@@ -88,7 +98,8 @@ def delTask(request):
         message = "Not logged in"
         return render(request, "signIn.html", {"msg": message})
     
-    return render(request, "welcome.html", {"e": email, "t" : tasks})
+    render(request, "welcome.html", {"e": email, "t" : tasks})
+    return redirect('/home/')
 
 def editTask(request):
     tasks = getTasks()
@@ -105,7 +116,6 @@ def editTask(request):
     
 def saveTask(request):
     tasks = getTasks()
-    db = firebase.database()
     user = auth.current_user
     email = user['email']
     task_id = request.POST.get('key')
@@ -118,4 +128,5 @@ def saveTask(request):
         message = "Not logged in"
         return render(request, "signIn.html", {"msg": message})
     
-    return render(request, "welcome.html", {"e": email, "t" : tasks})
+    render(request, "welcome.html", {"e": email, "t" : tasks})
+    return redirect('/home/')
