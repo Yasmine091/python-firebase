@@ -43,6 +43,16 @@ def postSign(request):
     print(user)
     return render(request, "welcome.html", {"e": email, "t" : tasks})
 
+def postLeave(request):
+    try:
+        del request.session['token_id']
+        auth.signOut()
+    except KeyError:
+        pass
+    
+    message = "You are logged out"
+    return render(request, "signIn.html", {"msg": message})
+
 def postTask(request):
     tasks = getTasks()
     db = firebase.database()

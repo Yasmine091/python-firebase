@@ -12,9 +12,15 @@
 
 <body style="margin: 0px auto; max-width: 600px;">
     {% csrf_token %}
-    <h1>
-        Welcome {{e}}
-    </h1>
+    <div style="display: flex;">
+        <h1>
+            Welcome {{e}}
+        </h1>
+        <form action="/logout/" method="post">
+            {% csrf_token %}
+            <input type="submit" value="LogOut">
+        </form>
+    </div>
     <form action="/postmessage/" method="post" style="border: #9d9d9d 1px solid; border-radius: 6px; padding: 50px 100px;">
         {% csrf_token %}
         <label for="contents">Message :</label>
@@ -23,17 +29,19 @@
     </form>
     <div>
         {% for task in t %}
+        <div style="display: flex;">
         <small style="margin-right: 5px;">{{ task.1.task }}</small>
-        <form action="/editmessage/" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="key" value="{{ task.0 }}">
-            <input type="submit" value="edit">
-        </form>
-        <form action="/delmessage/" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="key" value="{{ task.0 }}">
-            <input type="submit" value="delete">
-        </form>
+            <form action="/editmessage/" method="post" style="margin-right: 5px;">
+                {% csrf_token %}
+                <input type="hidden" name="key" value="{{ task.0 }}">
+                <input type="submit" value="edit">
+            </form>
+            <form action="/delmessage/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="key" value="{{ task.0 }}">
+                <input type="submit" value="delete">
+            </form>
+        </div>
         {% endfor %}
     </div>
 </body>
