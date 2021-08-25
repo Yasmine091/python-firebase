@@ -59,7 +59,6 @@ def postSign(request):
         message = "Invalid credentials"
         return render(request, "signIn.html", {"msg": message})
     
-    #user = auth.refresh(user['refreshToken'])
     print(user)
     request.session['userAccount'] = user
     render(request, "welcome.html", {"e": email, "t" : tasks})
