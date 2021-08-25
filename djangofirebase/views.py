@@ -34,7 +34,7 @@ def loadHome(request):
         return redirect('/')
     
     tasks = getTasks()
-    user = auth.current_user
+    user = request.session['userAccount']
     email = user['email']
     return render(request, "welcome.html", {"e": email, "t" : tasks})
 
@@ -76,7 +76,7 @@ def postTask(request):
         return redirect('/')
     
     tasks = getTasks()
-    user = auth.current_user
+    user = request.session['userAccount']
     email = user['email']
     contents = request.POST.get('contents')
     data = {"task": contents}
@@ -98,7 +98,7 @@ def delTask(request):
         return redirect('/')
     
     tasks = getTasks()
-    user = auth.current_user
+    user = request.session['userAccount']
     email = user['email']
     task_id = request.POST.get('key')
     
@@ -115,7 +115,7 @@ def editTask(request):
         return redirect('/')
     
     tasks = getTasks()
-    user = auth.current_user
+    user = request.session['userAccount']
     email = user['email']
     task_id = request.POST.get('key')
 
@@ -129,7 +129,7 @@ def saveTask(request):
         return redirect('/')
     
     tasks = getTasks()
-    user = auth.current_user
+    user = request.session['userAccount']
     email = user['email']
     task_id = request.POST.get('key')
     contents = request.POST.get('contents')
