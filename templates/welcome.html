@@ -1,59 +1,95 @@
+{% extends "base.html" %}
+
 {% if msg %}
 <script>
     alert('{{ msg }}')
 </script>
 {% endif %}
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+{% block title %}To do list{% endblock %}
+{% block content %}
 
-<body style="margin: 0px auto; max-width: 600px;">
-    {% csrf_token %}
-    <div style="display: flex;">
-        <h1>
-            Welcome {{e}}
-        </h1>
-        <form action="/logout/" method="post" style="align-self: center;">
-            {% csrf_token %}
-            <input type="submit" value="LogOut">
-        </form>
-    </div>
-    <form action="/postmessage/" method="post"
-        style="border: #9d9d9d 1px solid; border-radius: 6px; padding: 50px 100px;">
-        {% csrf_token %}
-        <label for="contents">Message :</label>
-        <input type="text" name="contents" required>
-        <input type="submit" value="save">
-    </form>
-    <div>
-        {% for task in t %}
-        {% if tid and tid == task.0 %}
-        <form action="/savemessage/" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="key" value="{{ task.0 }}">
-            <input type="text" name="contents" value="{{ task.1.task }}">
-            <input type="submit" value="save">
-        </form>
-        {% else %}
-        <div style="display: flex;">
-            <small style="margin-right: 5px;">{{ task.1.task }}</small>
-            <form action="/editmessage/" method="post" style="margin-right: 5px;">
-                {% csrf_token %}
-                <input type="hidden" name="key" value="{{ task.0 }}">
-                <input type="submit" value="edit">
-            </form>
-            <form action="/delmessage/" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="key" value="{{ task.0 }}">
-                <input type="submit" value="delete">
-            </form>
+{% csrf_token %}
+
+<section class="hero is-fullheight is-dark">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <div class="column is-6 is-offset-3">
+                <article class="box panel is-primary" style="padding: 0px;">
+                    <form action="/logout/" method="post">
+                    <p class="panel-heading">
+                        Welcome {{e}}
+                        {% csrf_token %}
+                        <button type="submit" class="button is-small is-light is-pulled-right" title="Log Out">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </p>
+                </form>
+                    <div class="panel-block">
+                        <form action="/postmessage/" method="post" class="is-block" style="width: 100%;">
+                            <div class="field has-addons" style="width: 100%;">
+                                {% csrf_token %}
+                                <p class="control has-icons-left" style="width: inherit;">
+                                    <input class="input is-primary" type="text" name="contents" placeholder="Message"
+                                        required>
+                                    <span class="icon is-left">
+                                        <i class="fas fa-list-alt" aria-hidden="true"></i>
+                                    </span>
+                                </p>
+                                <p class="control">
+                                    <input type="submit" class="button is-primary" value="Save">
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                    {% for task in t %}
+                    <a class="panel-block is-active is-block">
+                        <!-- <span class="panel-icon is-pulled-left">
+                            <input type="checkbox">
+                        </span>
+                        <span class="is-primary is-small is-pulled-left">
+                            {{ task.1.date }}
+                        </span> -->
+
+                        {% if tid and tid == task.0 %}
+
+                        <form action="/savemessage/" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="key" value="{{ task.0 }}">
+                            <input type="text" name="contents" value="{{ task.1.task }}">
+                            <input type="submit" value="save">
+                        </form>
+                        {% else %}
+                        <span class="is-text is-inline-block" style="text-align: left;width: 85%; /** 80">
+                            {{ task.1.task }}
+                        </span>
+                        <span class="is-pulled-right" style="margin-top: -3px;">
+
+                            <form action="/delmessage/" class="is-pulled-right" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="key" value="{{ task.0 }}">
+                                <button type="submit" class="button is-small is-danger is-pulled-right" style="padding: 0px 10px;">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+
+                            <form action="/editmessage/" class="is-pulled-right" method="post"
+                                style="margin-right: 5px;">
+                                {% csrf_token %}
+                                <input type="hidden" name="key" value="{{ task.0 }}">
+                                <button type="submit" class="button is-small is-info is-pulled-right" style="padding: 0px 10px;">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </button>
+                            </form>
+
+                        </span>
+                        {% endif %}
+                    </a>
+                    {% endfor %}
+                </article>
+            </div>
         </div>
-        {% endif %}
-        {% endfor %}
     </div>
-</body>
+</section>
 
-</html>
+{% endblock %}

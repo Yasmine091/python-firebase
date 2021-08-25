@@ -15,8 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
-from django.contrib import admin
 from django.conf.urls import url
 from . import views
 
@@ -25,7 +23,7 @@ urlpatterns = [
     url(r'^$',views.signIn),
     url(r'^postsign/',views.postSign),
     url(r'^home/',views.loadHome),
-    url(r'^logout/',views.postLeave),
+    url(r'^logout/',views.logOut),
     url(r'^postmessage/',views.postTask),
     url(r'^editmessage/',views.editTask),
     url(r'^savemessage/',views.saveTask),

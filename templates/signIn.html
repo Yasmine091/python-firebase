@@ -1,24 +1,53 @@
+{% extends "base.html" %}
+
 {% if msg %}
 <script>
     alert('{{ msg }}')
 </script>
 {% endif %}
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Sign</title>
-</head>
+{% block title %}Sign in{% endblock %}
+{% block content %}
 
-<body>
-    <form action="/postsign/" method="post">
-        {% csrf_token %}
-        Email :
-        <input type="email" name="email">
-        Password:
-        <input type="password" name="pass">
-        <input type="submit" value="SignIn">
-    </form>
-</body>
+    <section class="hero is-fullheight" style="background-image: url('https://wallpaperaccess.com/full/1296034.jpg');background-size: cover;background-position: center;">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <div class="column is-4 is-offset-4">
+                    <div class="box" style="background-color: #fff9;">
+                        <p class="subtitle is-4">Please login to proceed.</p>
+                        <br />
+                        <form action="/postsign/" method="post">
+                            {% csrf_token %}
+                            <div class="field">
+                                <p class="control has-icons-left has-icons-right">
+                                    <input class="input" type="email" placeholder="Email" name="email" />
+                                    <span class="icon is-left">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+                                    <span class="icon is-right">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="field">
+                                <p class="control has-icons-left">
+                                    <input class="input" type="password" placeholder="Password" name="pass"/>
+                                    <span class="icon is-left">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                </p>
+                            </div>
+                            <button class="button is-block is-info is-fullwidth">Sign in</button><br />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-foot">
+            <div class="container has-text-centered">
+                
+            </div>
+        </div>
+    </section>
 
-</html>
+{% endblock %}
