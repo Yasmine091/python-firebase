@@ -55,7 +55,7 @@ def postSign(request):
     try:
         user = auth.sign_in_with_email_and_password(email, passw)
     except:
-        message = "Invalid cerediantials"
+        message = "Invalid credentials"
         return render(request, "signIn.html", {"msg": message})
     
     user = auth.refresh(user['refreshToken'])

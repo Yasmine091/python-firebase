@@ -9,22 +9,20 @@
 {% block title %}To do list{% endblock %}
 {% block content %}
 
-{% csrf_token %}
-
 <section class="hero is-fullheight is-dark">
     <div class="hero-body">
         <div class="container has-text-centered">
             <div class="column is-6 is-offset-3">
                 <article class="box panel is-primary" style="padding: 0px;">
                     <form action="/logout/" method="post">
-                    <p class="panel-heading">
-                        Welcome {{e}}
-                        {% csrf_token %}
-                        <button type="submit" class="button is-small is-light is-pulled-right" title="Log Out">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </button>
-                    </p>
-                </form>
+                        <p class="panel-heading">
+                            Welcome {{e}}
+                            {% csrf_token %}
+                            <button type="submit" class="button is-small is-light is-pulled-right" title="Log Out">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </p>
+                    </form>
                     <div class="panel-block">
                         <form action="/postmessage/" method="post" class="is-block" style="width: 100%;">
                             <div class="field has-addons" style="width: 100%;">
@@ -43,7 +41,7 @@
                         </form>
                     </div>
                     {% for task in t %}
-                    <a class="panel-block is-active is-block">
+                    <a class="panel-block is-active">
                         <!-- <span class="panel-icon is-pulled-left">
                             <input type="checkbox">
                         </span>
@@ -53,14 +51,28 @@
 
                         {% if tid and tid == task.0 %}
 
-                        <form action="/savemessage/" method="post">
+                        <form action="/savemessage/" method="post" class="is-inline-block" style="width: 93%;">
                             {% csrf_token %}
                             <input type="hidden" name="key" value="{{ task.0 }}">
-                            <input type="text" name="contents" value="{{ task.1.task }}">
-                            <input type="submit" value="save">
+                            <input type="text" style="width: 86%;" class="input is-primary is-small is-pulled-left"
+                                name="contents" value="{{ task.1.task }}">
+                            <button type="submit" class="button is-small is-success is-pulled-right"
+                                style="padding: 0px 10px; margin-right: 5px;">
+                                <i class="fas fa-save"></i>
+                            </button>
                         </form>
+
+                        <form action="/delmessage/" class="is-pulled-right" class="is-inline-block" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="key" value="{{ task.0 }}">
+                            <button type="submit" class="button is-small is-danger is-pulled-right"
+                                style="padding: 0px 10px;">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+
                         {% else %}
-                        <span class="is-text is-inline-block" style="text-align: left;width: 85%; /** 80">
+                        <span class="is-text is-inline-block" style="text-align: left;width: 86%; /** 80">
                             {{ task.1.task }}
                         </span>
                         <span class="is-pulled-right" style="margin-top: -3px;">
@@ -68,7 +80,8 @@
                             <form action="/delmessage/" class="is-pulled-right" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="key" value="{{ task.0 }}">
-                                <button type="submit" class="button is-small is-danger is-pulled-right" style="padding: 0px 10px;">
+                                <button type="submit" class="button is-small is-danger is-pulled-right"
+                                    style="padding: 0px 10px;">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
@@ -77,7 +90,8 @@
                                 style="margin-right: 5px;">
                                 {% csrf_token %}
                                 <input type="hidden" name="key" value="{{ task.0 }}">
-                                <button type="submit" class="button is-small is-info is-pulled-right" style="padding: 0px 10px;">
+                                <button type="submit" class="button is-small is-info is-pulled-right"
+                                    style="padding: 0px 9px;">
                                     <i class="fas fa-pencil-alt"></i>
                                 </button>
                             </form>
